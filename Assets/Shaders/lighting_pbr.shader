@@ -1,4 +1,4 @@
-Shader "Lighting/pbrLittle"
+Shader "Lighting/pbr"
 {
     Properties
     {
@@ -61,7 +61,7 @@ Shader "Lighting/pbrLittle"
             #include "lygia/lighting/material/new.hlsl"
             
             // #define SCENE_CUBEMAP _Cube
-            #include "lygia/lighting/pbrLittle.hlsl"
+            #include "lygia/lighting/pbr.hlsl"
             #include "lygia/color/space/linear2gamma.hlsl"
 
             float4 frag (v2f i) : SV_Target
@@ -80,7 +80,7 @@ Shader "Lighting/pbrLittle"
                 mat.metallic = _Metallic;
                 mat.shadow = SHADOW_ATTENUATION(i);
 
-                color = pbrLittle(mat);
+                color = pbr(mat);
                 color = linear2gamma(color);
 
                 return color;
