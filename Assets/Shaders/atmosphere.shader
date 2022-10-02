@@ -37,7 +37,7 @@ Shader "Atmosphere"
             }
 
             #ifndef PROJECTION_MODE
-            #define PROJECTION_MODE 0
+            #define PROJECTION_MODE 1
             #endif
             #include "lygia/space/cart2fisheye.hlsl"
             #include "lygia/space/cart2equirect.hlsl"
@@ -79,21 +79,21 @@ Shader "Atmosphere"
                 float2 pixel = 1.0/_ScreenParams;
                 float2 st = i.uv;
 
-                float2 sun = float2(sin(_Time.y), 0.0);
+                float2 sun = float2(cos(_Time.y) * 0.5 + 0.5, 0.5);
 
             #if PROJECTION_MODE == 0
-                float3 eye_dir = cart2equirect(uv);
+                float3 eye_dir = cart2equirect(st);
                 float3 sun_dir = cart2equirect(sun);
             #elif PROJECTION_MODE == 1
-                float3 eye_dir = cart2fisheye(uv);
+                float3 eye_dir = cart2fisheye(st);
                 float3 sun_dir = cart2fisheye(sun);
             #else
-                float3 eye_dir = cart2viewSpace(uv);
+                float3 eye_dir = cart2viewSpace(st);
                 float3 sun_dir = cart2viewSpace(sun);
             #endif
 
                 color.rgb = atmosphere(eye_dir, sun_dir);
-                color = tonemap(color);
+                // color = tonemap(color);
 
                 return color;
             }
