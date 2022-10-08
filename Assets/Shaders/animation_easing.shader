@@ -1,4 +1,4 @@
-Shader "Animation"
+Shader "Animation/Easing"
 {
     Properties
     {
@@ -90,3 +90,4 @@ Shader "Animation"
         }
     }
 }
+
