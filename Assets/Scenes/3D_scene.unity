@@ -177,7 +177,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: b783a57d4d8aff38c8c8be5e58144c9e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9481e145ee361607fbe0b2b33301f8f5, type: 2}
+      objectReference: {fileID: 2100000, guid: 7bfc7f2ef1d8ae118bbbd6f814945d3b, type: 2}
     - target: {fileID: 919132149155446097, guid: b783a57d4d8aff38c8c8be5e58144c9e, type: 3}
       propertyPath: m_Name
       value: dragon
@@ -415,7 +415,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9481e145ee361607fbe0b2b33301f8f5, type: 2}
+  - {fileID: 2100000, guid: 7bfc7f2ef1d8ae118bbbd6f814945d3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

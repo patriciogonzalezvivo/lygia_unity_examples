@@ -61,6 +61,7 @@ Shader "Lighting/pbrLittle"
             #include "lygia/lighting/material/new.hlsl"
             
             // #define SCENE_CUBEMAP _Cube
+            #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
             #include "lygia/lighting/pbrLittle.hlsl"
             #include "lygia/color/space/linear2gamma.hlsl"
 

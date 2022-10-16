@@ -61,6 +61,7 @@ Shader "Lighting/pbr"
             #include "lygia/lighting/material/new.hlsl"
             
             // #define SCENE_CUBEMAP _Cube
+            #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
             #include "lygia/lighting/pbr.hlsl"
             #include "lygia/color/space/linear2gamma.hlsl"
 
@@ -81,7 +82,7 @@ Shader "Lighting/pbr"
                 mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = pbr(mat);
-                color = linear2gamma(color);
+                // color = linear2gamma(color);
 
                 return color;
             }

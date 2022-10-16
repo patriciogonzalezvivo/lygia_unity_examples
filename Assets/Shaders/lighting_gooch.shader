@@ -63,6 +63,7 @@ Shader "Lighting/Gooch"
             
             #define GOOCH_WARM _Warm.rgb
             #define GOOCH_COLD _Cold.rgb
+            #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
             #include "lygia/lighting/gooch.hlsl"
             #include "lygia/color/space/linear2gamma.hlsl"
 
