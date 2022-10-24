@@ -60,8 +60,12 @@ Shader "Lighting/pbr"
             #include "lygia/lighting/material.hlsl"
             #include "lygia/lighting/material/new.hlsl"
             
-            // #define SCENE_CUBEMAP _Cube
+            #define SCENE_CUBEMAP _Cube
             #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
+
+            #include "lygia/lighting/atmosphere.hlsl"
+            #define ENVMAP_FNC(NORM, ROUGHNESS, METALLIC) atmosphere(NORM, normalize(_WorldSpaceLightPos0.xyz))
+
             #include "lygia/lighting/pbr.hlsl"
             #include "lygia/color/space/linear2gamma.hlsl"
 
@@ -74,7 +78,7 @@ Shader "Lighting/pbr"
                 float4 tex = tex2D(_MainTex, st);
 
                 Material mat = materialNew();
-                mat.albedo = lerp(i.color, tex, tex.a);
+                mat.albedo.rgb = lerp(i.color, tex, tex.a);
                 mat.position = i.vertex.xyz;
                 mat.normal = i.normal;
                 mat.roughness = _Roughtness;
@@ -82,7 +86,7 @@ Shader "Lighting/pbr"
                 mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = pbr(mat);
-                // color = linear2gamma(color);
+                color = linear2gamma(color);
 
                 return color;
             }

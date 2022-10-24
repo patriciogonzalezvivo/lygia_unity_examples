@@ -39,8 +39,8 @@ Shader "Atmosphere"
             #ifndef PROJECTION_MODE
             #define PROJECTION_MODE 1
             #endif
-            #include "lygia/space/cart2fisheye.hlsl"
-            #include "lygia/space/cart2equirect.hlsl"
+            #include "lygia/space/fisheye2xyz.hlsl"
+            #include "lygia/space/equirect2xyz.hlsl"
 
             // #define ATMOSPHERE_FAST
             #include "lygia/lighting/atmosphere.hlsl"
@@ -82,11 +82,11 @@ Shader "Atmosphere"
                 float2 sun = float2(cos(_Time.y) * 0.5 + 0.5, 0.5);
 
             #if PROJECTION_MODE == 0
-                float3 eye_dir = cart2equirect(st);
-                float3 sun_dir = cart2equirect(sun);
+                float3 eye_dir = equirect2xyz(st);
+                float3 sun_dir = equirect2xyz(sun);
             #elif PROJECTION_MODE == 1
-                float3 eye_dir = cart2fisheye(st);
-                float3 sun_dir = cart2fisheye(sun);
+                float3 eye_dir = fisheye2xyz(st);
+                float3 sun_dir = fisheye2xyz(sun);
             #else
                 float3 eye_dir = cart2viewSpace(st);
                 float3 sun_dir = cart2viewSpace(sun);

@@ -59,7 +59,10 @@ Shader "Lighting/pbrLittle"
 
             #include "lygia/lighting/material.hlsl"
             #include "lygia/lighting/material/new.hlsl"
-            
+
+            #include "lygia/lighting/atmosphere.hlsl"
+            #define ENVMAP_FNC(NORM, ROUGHNESS, METALLIC) atmosphere(NORM, normalize(_WorldSpaceLightPos0.xyz))
+
             // #define SCENE_CUBEMAP _Cube
             #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
             #include "lygia/lighting/pbrLittle.hlsl"
