@@ -6,15 +6,20 @@ Shader "Lighting/RayMarching"
     SubShader
     {
         // No culling or depth
-        Cull Off ZWrite Off ZTest Always
+        Cull Off
+        Lighting Off
+        Blend One OneMinusSrcAlpha
 
         Pass
         {
+            Tags{ "LIGHTMODE" = "ForwardBase" "RenderType" = "Opaque" }
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            #include <UnityLightingCommon.cginc>
 
             struct appdata
             {
@@ -25,6 +30,7 @@ Shader "Lighting/RayMarching"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                float2 st : TEXCOORD1;
                 float4 vertex : SV_POSITION;
             };
 
@@ -33,13 +39,16 @@ Shader "Lighting/RayMarching"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.st = ComputeScreenPos(o.vertex);
                 return o;
             }
 
 
             #define RESOLUTION _ScreenParams.xy
             #define CAMERA_POSITION _WorldSpaceCameraPos
-
+            #define SCENE_CUBEMAP   _Cube
+            #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
+            #define LIGHT_COLOR     _LightColor0.rgb
             // #define LIGHT_POSITION     u_light
             // #define LIGHT_DIRECTION     u_light
             // #define LIGHT_COLOR         float3(0.95, 0.65, 0.5)
@@ -87,12 +96,14 @@ Shader "Lighting/RayMarching"
             float4 frag (v2f i) : SV_Target
             {
                 float4 color = float4(0.0, 0.0, 0.0, 1.0);
-                float2 pixel = 1.0/_ScreenParams;
-                float2 st = i.uv;
+                float2 pixel = 1.0/RESOLUTION;
+                float2 st = i.vertex.xy * pixel;//ComputeScreenPos(i.vertex) * pixel;
+                float2 uv = i.uv;
 
-                float2 uv = st;
                 // uv = ratio(st, RESOLUTION);
-                color.rgb = raymarch(float3(0.0, 50.0, 50.0), uv).rgb;
+                float4 cam = mul(UNITY_MATRIX_MV, float3(0.0, 0.0, 1.0));
+                float3 rd = mul(UNITY_MATRIX_V, normalize( float3(st*2.0-1.0, -3.0) ) );
+                color.rgb = RAYMARCH_RENDER_FNC( cam * 0.11, (rd) );
                 color = linear2gamma(color);
 
                 return color;
