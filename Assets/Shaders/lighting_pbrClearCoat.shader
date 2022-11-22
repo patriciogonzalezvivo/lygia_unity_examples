@@ -1,4 +1,4 @@
-Shader "Lighting/glass"
+Shader "Lighting/pbrClearCoat"
 {
     Properties
     {
@@ -6,6 +6,9 @@ Shader "Lighting/glass"
         _Cube ("Cubemap", CUBE) = "" {}
         _Roughtness ("Roughtness", Range(0.001,1.0) ) = 0.05
         _Metallic ("Metallic", Range(0.001,1.0) ) = 0.05
+        _Ior ("Ior", Vector ) = (1.524, 1.517, 1.515)
+        _ClearCoat ("ClearCoat", Range(0.0,10.0) ) = 1.0
+        _ClearCoatRoughness ("ClearCoatRoughness", Range(0.001,1.0) ) = 0.05
     }
     SubShader
     {
@@ -42,8 +45,11 @@ Shader "Lighting/glass"
             sampler2D _MainTex;
             samplerCUBE _Cube;
 
-            float _Roughtness;
-            float _Metallic;
+            float   _Roughtness;
+            float   _Metallic;
+            float3  _Ior;
+            float   _ClearCoat;
+            float   _ClearCoatRoughness;
 
             v2f vert (appdata_full v)
             {
@@ -66,7 +72,7 @@ Shader "Lighting/glass"
             // #include "lygia/lighting/atmosphere.hlsl"
             // #define ENVMAP_FNC(NORM, ROUGHNESS, METALLIC) atmosphere(NORM, normalize(_WorldSpaceLightPos0.xyz))
 
-            #include "lygia/lighting/glass.hlsl"
+            #include "lygia/lighting/pbrClearCoat.hlsl"
             #include "lygia/color/space/linear2gamma.hlsl"
 
             float4 frag (v2f i) : SV_Target
@@ -81,14 +87,14 @@ Shader "Lighting/glass"
                 mat.albedo.rgb = lerp(i.color, tex, tex.a);
                 mat.position = i.vertex.xyz;
                 mat.normal = i.normal;
-                // mat.ior = IOR_OIL_RGB;
-                mat.ior = IOR_GLASS_RGB;
-                // mat.ior = IOR_GLASS_FLINT_RGB;
                 mat.roughness = _Roughtness;
                 mat.metallic = _Metallic;
-                // mat.shadow = SHADOW_ATTENUATION(i);
+                mat.ior = _Ior;
+                mat.clearCoat = _ClearCoat;
+                mat.clearCoatRoughness = _ClearCoatRoughness;
+                mat.shadow = SHADOW_ATTENUATION(i);
 
-                color = glass(mat);
+                color = pbrClearCoat(mat);
                 color = linear2gamma(color);
 
                 return color;
