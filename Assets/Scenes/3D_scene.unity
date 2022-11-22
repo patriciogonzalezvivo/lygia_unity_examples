@@ -177,7 +177,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: b783a57d4d8aff38c8c8be5e58144c9e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2eaf43541945217528d7f9a0fed8307b, type: 2}
+      objectReference: {fileID: 2100000, guid: a0f702fe8f9b6cbdc9441676155f6457, type: 2}
     - target: {fileID: 919132149155446097, guid: b783a57d4d8aff38c8c8be5e58144c9e, type: 3}
       propertyPath: m_Name
       value: dragon
