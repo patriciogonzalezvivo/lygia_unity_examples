@@ -41,7 +41,6 @@ Shader "Color/LUT"
             sampler2D _MainTex;
             sampler2D _LutTex;
             #define LUT_SQUARE
-            #define LUT_FLIP_Y
             #include "lygia/color/lut.hlsl"
 
             float4 frag (v2f i) : SV_Target

@@ -40,7 +40,8 @@ Shader "Filters/gaussianBlur2D"
             sampler2D   _MainTex;
 
             #define GAUSSIANBLUR_2D
-            #define GAUSSIANBLUR_SAMPLER_FNC(POS_UV) tex2D(tex, clamp(POS_UV, float2(0.01, 0.01), float2(0.99, 0.99)))
+            #include "lygia/sample/clamp2edge.hlsl"
+            #define GAUSSIANBLUR_SAMPLER_FNC(TEX, UV) sampleClamp2edge(TEX, UV)
             #include "lygia/filter/gaussianBlur.hlsl"
 
             #include "lygia/draw/digits.hlsl"

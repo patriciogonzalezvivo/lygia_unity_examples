@@ -43,7 +43,8 @@ Shader "Distort/Barrel"
             // #define BARREL_OCT_1
             // #define BARREL_OCT_2
             // #define BARREL_DISTANCE pow(dist, 0.2)
-            #define BARREL_SAMPLER_FNC(UV) tex2D(tex, clamp(UV, 0.01, 0.99))
+            #include "lygia/sample/clamp2edge.hlsl"
+            #define BARREL_SAMPLER_FNC(TEX, UV) sampleClamp2edge(TEX, UV)
             #include "lygia/distort/barrel.hlsl"
             #include "lygia/draw/digits.hlsl"
 

@@ -39,7 +39,8 @@ Shader "Filters/RadialBlur"
 
             sampler2D   _MainTex;
 
-            #define RADIALBLUR_SAMPLER_FNC(POS_UV) tex2D(tex, clamp(POS_UV, float2(0.01, 0.01), float2(0.99, 0.99)))
+            #include "lygia/sample/clamp2edge.hlsl"
+            #define RADIALBLUR_SAMPLER_FNC(TEX, UV) sampleClamp2edge(TEX, UV)
             #include "lygia/filter/radialBlur.hlsl"
 
             #include "lygia/math/decimation.hlsl"
