@@ -28,7 +28,7 @@ Shader "Lighting/Iridescence"
 
             struct v2f
             {
-                float4 vertex : TEXCOORD2;
+                float3 worldPos : TEXCOORD2;
                 float4 pos : SV_POSITION;
                 float4 color : COLOR;
                 float3 normal : NORMAL;
@@ -42,9 +42,9 @@ Shader "Lighting/Iridescence"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.vertex = v.vertex;//mul(unity_ObjectToWorld, v.vertex);
                 o.color = v.color;
-                o.normal = v.normal;//UnityObjectToWorldNormal(v.normal);
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.normal = normalize(UnityObjectToWorldNormal(v.normal));
                 o.texcoord = v.texcoord;
                 TRANSFER_SHADOW(o)
                 return o;
@@ -65,14 +65,14 @@ Shader "Lighting/Iridescence"
                 float2 pixel = 1.0/_ScreenParams;
                 float2 st = i.texcoord;
 
-                float3 V = normalize(_WorldSpaceCameraPos.xyz - i.vertex);
+                float3 V = normalize(_WorldSpaceCameraPos.xyz - i.worldPos);
                 float3 N = normalize(i.normal);
 
                 float cosA = 1.0-dot(N, V);
 
                 Material mat = materialNew();
                 mat.albedo.rgb = i.color.rgb * 0.2;
-                mat.position = i.vertex.xyz;
+                mat.position = i.worldPos;
                 mat.normal = i.normal;
                 mat.roughness = 0.001;
                 mat.metallic = 0.1;

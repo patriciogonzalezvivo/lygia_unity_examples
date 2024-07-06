@@ -34,7 +34,7 @@ Shader "Lighting/pbrClearCoat"
 
             struct v2f
             {
-                float4 worldPos : TEXCOORD2;
+                float3 worldPos : TEXCOORD2;
                 float4 pos : SV_POSITION;
                 float4 color : COLOR;
                 float3 normal : NORMAL;
