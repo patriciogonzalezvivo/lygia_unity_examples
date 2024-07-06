@@ -69,7 +69,6 @@ Shader "Lighting/glass"
             // #define ENVMAP_FNC(NORM, ROUGHNESS, METALLIC) atmosphere(NORM, normalize(_WorldSpaceLightPos0.xyz))
 
             #include "lygia/lighting/pbrGlass.hlsl"
-            #include "lygia/color/space/linear2gamma.hlsl"
 
             float4 frag (v2f i) : SV_Target
             {
@@ -89,7 +88,6 @@ Shader "Lighting/glass"
                 // mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = pbrGlass(mat);
-                color = linear2gamma(color);
 
                 return color;
             }

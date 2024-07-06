@@ -67,7 +67,6 @@ Shader "Lighting/RayMarching"
 
             #include "lygia/space/ratio.hlsl"
             #include "lygia/sdf.hlsl"
-            #include "lygia/color/space/linear2gamma.hlsl"
 
             float checkBoard(float2 uv, float2 _scale) {
                 uv = floor(frac(uv * _scale) * 2.0);
@@ -104,7 +103,6 @@ Shader "Lighting/RayMarching"
                 float4 cam = mul(UNITY_MATRIX_MV, float3(0.0, 0.0, 1.0));
                 float3 rd = mul(UNITY_MATRIX_V, normalize( float3(st*2.0-1.0, -3.0) ) );
                 color.rgb = RAYMARCH_RENDER_FNC( cam * 0.11, (rd) );
-                color = linear2gamma(color);
 
                 return color;
             }

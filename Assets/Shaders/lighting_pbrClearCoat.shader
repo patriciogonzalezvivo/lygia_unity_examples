@@ -74,7 +74,6 @@ Shader "Lighting/pbrClearCoat"
             // #define ENVMAP_FNC(NORM, ROUGHNESS, METALLIC) atmosphere(NORM, normalize(_WorldSpaceLightPos0.xyz))
 
             #include "lygia/lighting/pbrClearCoat.hlsl"
-            #include "lygia/color/space/linear2gamma.hlsl"
 
             float4 frag (v2f i) : SV_Target
             {
@@ -96,7 +95,6 @@ Shader "Lighting/pbrClearCoat"
                 mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = pbrClearCoat(mat);
-                color = linear2gamma(color);
 
                 return color;
             }

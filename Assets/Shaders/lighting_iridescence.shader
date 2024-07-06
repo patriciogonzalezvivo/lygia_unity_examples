@@ -56,7 +56,6 @@ Shader "Lighting/Iridescence"
             
             // #define SCENE_CUBEMAP _Cube
             #include "lygia/lighting/pbr.hlsl"
-            #include "lygia/color/space/linear2gamma.hlsl"
 
             #include "lygia/lighting/iridescence.hlsl"
 

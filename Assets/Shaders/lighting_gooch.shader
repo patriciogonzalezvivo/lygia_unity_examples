@@ -65,7 +65,6 @@ Shader "Lighting/Gooch"
             #define GOOCH_COLD _Cold.rgb
             #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
             #include "lygia/lighting/gooch.hlsl"
-            #include "lygia/color/space/linear2gamma.hlsl"
 
             float4 frag (v2f i) : SV_Target
             {
@@ -83,7 +82,6 @@ Shader "Lighting/Gooch"
                 mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = gooch(mat);
-                color = linear2gamma(color);
 
                 return color;
             }
