@@ -37,11 +37,7 @@ Shader "Color/Mix"
                 return o;
             }
 
-            // the texture needs to be the mixbox_lut.png
             sampler2D _MainTex;
-            #define MIXBOX_LUT _MainTex
-            #include "lygia/color/mixBox.hlsl"
-
             #include "lygia/math/mix.hlsl"
             #include "lygia/color/mixOklab.hlsl"
 
@@ -56,12 +52,10 @@ Shader "Color/Mix"
                 float3 B = float3(0.0824, 0.1686, 0.5529);
                 float pct = st.x;
 
-                if (st.y < 0.33) 
+                if (st.y < 0.5) 
                     color.rgb = mix(A, B, pct);
-                else if (st.y < 0.66)
-                    color.rgb = mixOklab(A, B, pct);
                 else
-                    color.rgb = mixBox(A, B, st.x);
+                    color.rgb = mixOklab(A, B, pct);
 
                 return color;
             }

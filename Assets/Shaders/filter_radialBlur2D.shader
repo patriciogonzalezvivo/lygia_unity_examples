@@ -43,7 +43,7 @@ Shader "Filters/RadialBlur"
             #define RADIALBLUR_SAMPLER_FNC(TEX, UV) sampleClamp2edge(TEX, UV)
             #include "lygia/filter/radialBlur.hlsl"
 
-            #include "lygia/math/decimation.hlsl"
+            #include "lygia/math/decimate.hlsl"
             #include "lygia/draw/digits.hlsl"
 
             float4 frag (v2f i) : SV_Target {

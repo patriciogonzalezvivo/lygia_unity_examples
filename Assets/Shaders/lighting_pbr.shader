@@ -40,7 +40,8 @@ Shader "Lighting/pbr"
             };
 
             sampler2D _MainTex;
-            samplerCUBE _Cube;
+            TextureCube _Cube;
+            SamplerState sampler_Cube;
 
             float _Roughtness;
             float _Metallic;
