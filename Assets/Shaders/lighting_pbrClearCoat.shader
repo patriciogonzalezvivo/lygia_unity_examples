@@ -4,7 +4,7 @@ Shader "Lighting/pbrClearCoat"
     {
         _MainTex ("Base (RGB)", 2D) = "white" {}
         _Cube ("Cubemap", CUBE) = "" {}
-        _Roughtness ("Roughtness", Range(0.001,1.0) ) = 0.05
+        _Roughness ("Roughness", Range(0.001,1.0) ) = 0.05
         _Metallic ("Metallic", Range(0.001,1.0) ) = 0.05
         _Ior ("Ior", Vector ) = (1.524, 1.517, 1.515)
         _ClearCoat ("ClearCoat", Range(0.0,10.0) ) = 1.0
@@ -34,7 +34,7 @@ Shader "Lighting/pbrClearCoat"
 
             struct v2f
             {
-                float4 vertex : TEXCOORD2;
+                float4 worldPos : TEXCOORD2;
                 float4 pos : SV_POSITION;
                 float4 color : COLOR;
                 float3 normal : NORMAL;
@@ -46,7 +46,7 @@ Shader "Lighting/pbrClearCoat"
             TextureCube _Cube;
             SamplerState sampler_Cube;
 
-            float   _Roughtness;
+            float   _Roughness;
             float   _Metallic;
             float3  _Ior;
             float   _ClearCoat;
@@ -55,10 +55,10 @@ Shader "Lighting/pbrClearCoat"
             v2f vert (appdata_full v)
             {
                 v2f o;
-                o.vertex = v.vertex;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.color = v.color;
-                o.normal = v.normal;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.normal = normalize(UnityObjectToWorldNormal(v.normal));
                 o.texcoord = v.texcoord;
                 TRANSFER_SHADOW(o)
                 return o;
@@ -85,9 +85,9 @@ Shader "Lighting/pbrClearCoat"
 
                 Material mat = materialNew();
                 mat.albedo.rgb = lerp(i.color, tex, tex.a);
-                mat.position = i.vertex.xyz;
+                mat.position = i.worldPos;
                 mat.normal = i.normal;
-                mat.roughness = _Roughtness;
+                mat.roughness = _Roughness;
                 mat.metallic = _Metallic;
                 mat.ior = _Ior;
                 mat.clearCoat = _ClearCoat;
