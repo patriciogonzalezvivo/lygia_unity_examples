@@ -5,7 +5,7 @@ Shader "Lighting/Gooch"
         _MainTex ("Base (RGB)", 2D) = "white" {}
         _Warm ("Warm", Color) = (0.25, 0.15, 0.0,1) 
         _Cold ("Cold", Color) = (0.0, 0.0, 0.2,1) 
-        _Roughtness ("Roughtness", Range(0.001,1.0) ) = 0.05
+        _Roughness ("_Roughness", Range(0.001,1.0) ) = 0.05
     }
     SubShader
     {
@@ -31,7 +31,7 @@ Shader "Lighting/Gooch"
 
             struct v2f
             {
-                float4 vertex : TEXCOORD2;
+                float3 worldPos : TEXCOORD2;
                 float4 pos : SV_POSITION;
                 float4 color : COLOR;
                 float3 normal : NORMAL;
@@ -44,15 +44,15 @@ Shader "Lighting/Gooch"
 
             float4 _Warm;
             float4 _Cold;
-            float _Roughtness;
+            float _Roughness;
 
             v2f vert (appdata_full v)
             {
                 v2f o;
-                o.vertex = v.vertex;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.color = v.color;
-                o.normal = v.normal;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.normal = normalize(UnityObjectToWorldNormal(v.normal));
                 o.texcoord = v.texcoord;
                 TRANSFER_SHADOW(o)
                 return o;
@@ -76,9 +76,9 @@ Shader "Lighting/Gooch"
 
                 Material mat = materialNew();
                 mat.albedo = lerp(i.color, tex, tex.a);
-                mat.position = i.vertex.xyz;
+                mat.position = i.worldPos;
                 mat.normal = i.normal;
-                mat.roughness = _Roughtness;
+                mat.roughness = _Roughness;
                 mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = gooch(mat);
