@@ -4,7 +4,7 @@ Shader "Lighting/pbr"
     {
         _MainTex ("Base (RGB)", 2D) = "white" {}
         _Cube ("Cubemap", CUBE) = "" {}
-        _Roughtness ("Roughtness", Range(0.001,1.0) ) = 0.05
+        _Roughness ("Roughness", Range(0.001,1.0) ) = 0.05
         _Metallic ("Metallic", Range(0.001,1.0) ) = 0.05
     }
     SubShader
@@ -31,7 +31,7 @@ Shader "Lighting/pbr"
 
             struct v2f
             {
-                float4 vertex : TEXCOORD2;
+                float3 worldPos : TEXCOORD2;
                 float4 pos : SV_POSITION;
                 float4 color : COLOR;
                 float3 normal : NORMAL;
@@ -43,16 +43,16 @@ Shader "Lighting/pbr"
             TextureCube _Cube;
             SamplerState sampler_Cube;
 
-            float _Roughtness;
+            float _Roughness;
             float _Metallic;
 
             v2f vert (appdata_full v)
             {
                 v2f o;
-                o.vertex = v.vertex;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.color = v.color;
-                o.normal = v.normal;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.normal = normalize(UnityObjectToWorldNormal(v.normal));
                 o.texcoord = v.texcoord;
                 TRANSFER_SHADOW(o)
                 return o;
@@ -79,9 +79,9 @@ Shader "Lighting/pbr"
 
                 Material mat = materialNew();
                 mat.albedo.rgb = lerp(i.color, tex, tex.a);
-                mat.position = i.vertex.xyz;
+                mat.position = i.worldPos;
                 mat.normal = i.normal;
-                mat.roughness = _Roughtness;
+                mat.roughness = _Roughness;
                 mat.metallic = _Metallic;
                 mat.shadow = SHADOW_ATTENUATION(i);
 
