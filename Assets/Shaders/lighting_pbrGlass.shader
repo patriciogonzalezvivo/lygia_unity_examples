@@ -4,7 +4,7 @@ Shader "Lighting/glass"
     {
         _MainTex ("Base (RGB)", 2D) = "white" {}
         _Cube ("Cubemap", CUBE) = "" {}
-        _Roughtness ("Roughtness", Range(0.001,1.0) ) = 0.05
+        _Roughness ("Roughness", Range(0.001,1.0) ) = 0.05
         _Metallic ("Metallic", Range(0.001,1.0) ) = 0.05
         _Ior ("Ior", Vector ) = (1.524, 1.517, 1.515)
     }
@@ -32,7 +32,7 @@ Shader "Lighting/glass"
 
             struct v2f
             {
-                float4 vertex : TEXCOORD2;
+                float3 worldPos : TEXCOORD2;
                 float4 pos : SV_POSITION;
                 float4 color : COLOR;
                 float3 normal : NORMAL;
@@ -41,19 +41,20 @@ Shader "Lighting/glass"
             };
 
             sampler2D _MainTex;
-            samplerCUBE _Cube;
+            TextureCube _Cube;
+            SamplerState sampler_Cube;
 
-            float   _Roughtness;
+            float   _Roughness;
             float   _Metallic;
             float3  _Ior;
 
             v2f vert (appdata_full v)
             {
                 v2f o;
-                o.vertex = v.vertex;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.color = v.color;
-                o.normal = v.normal;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.normal = normalize(UnityObjectToWorldNormal(v.normal));
                 o.texcoord = v.texcoord;
                 TRANSFER_SHADOW(o)
                 return o;
@@ -69,7 +70,6 @@ Shader "Lighting/glass"
             // #define ENVMAP_FNC(NORM, ROUGHNESS, METALLIC) atmosphere(NORM, normalize(_WorldSpaceLightPos0.xyz))
 
             #include "lygia/lighting/pbrGlass.hlsl"
-            #include "lygia/color/space/linear2gamma.hlsl"
 
             float4 frag (v2f i) : SV_Target
             {
@@ -81,15 +81,14 @@ Shader "Lighting/glass"
 
                 Material mat = materialNew();
                 mat.albedo.rgb = lerp(i.color, tex, tex.a);
-                mat.position = i.vertex.xyz;
+                mat.position = i.worldPos;
                 mat.normal = i.normal;
                 mat.ior = _Ior;
-                mat.roughness = _Roughtness;
+                mat.roughness = _Roughness;
                 mat.metallic = _Metallic;
                 // mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = pbrGlass(mat);
-                color = linear2gamma(color);
 
                 return color;
             }

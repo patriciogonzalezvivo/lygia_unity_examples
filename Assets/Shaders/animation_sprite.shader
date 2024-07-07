@@ -39,7 +39,7 @@ Shader "Animation/Sprite"
 
             sampler2D _MainTex;
 
-            #include "lygia/math/decimation.hlsl"
+            #include "lygia/math/decimate.hlsl"
             #include "lygia/space/scale.hlsl"
             #include "lygia/sample/sprite.hlsl"
             #include "lygia/animation/spriteLoop.hlsl"

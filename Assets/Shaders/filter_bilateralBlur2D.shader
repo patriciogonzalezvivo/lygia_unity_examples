@@ -39,7 +39,7 @@ Shader "Filters/BilateralBlur2D"
 
             sampler2D   _MainTex;
 
-            #include "lygia/filter/bilateralBlur/2D.hlsl"
+            #include "lygia/filter/bilateral.hlsl"
             #include "lygia/draw/digits.hlsl"
 
             float4 frag (v2f i) : SV_Target {
@@ -50,7 +50,7 @@ Shader "Filters/BilateralBlur2D"
                 float ix = floor(st.x * 5.0);
                 float kernel_size = max(1.0, ix * 4.0);;
 
-                color = bilateralBlur2D(_MainTex, st, pixel, int(kernel_size));
+                color = bilateral(_MainTex, st, pixel, int(kernel_size));
 
                 color += digits(st - float2(ix/5.0 + 0.01, 0.01), kernel_size, 0.0);
                 color -= step(.98, frac(st.x * 5.0));

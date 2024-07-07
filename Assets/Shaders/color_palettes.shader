@@ -36,10 +36,10 @@ Shader "Color/Palettes"
                 return o;
             }
 
-            #include "lygia/color/palette/chroma.hlsl"
+            #include "lygia/color/palette/spectral/soft.hlsl"
             #include "lygia/color/palette/fire.hlsl"
             #include "lygia/color/palette/heatmap.hlsl"
-            #include "lygia/color/palette/spectrum.hlsl"
+            #include "lygia/color/palette/spectral.hlsl"
 
             float4 frag (v2f i) : SV_Target
             {
@@ -50,9 +50,9 @@ Shader "Color/Palettes"
                 float pct = st.x;
 
                 if (st.y < 0.25) 
-                    color.rgb = chroma(pct);
+                    color.rgb = spectral_soft(pct);
                 else if (st.y < 0.5)
-                    color.rgb = spectrum(pct);
+                    color.rgb = spectral(pct);
                 else if (st.y < 0.75)
                     color.rgb = heatmap(pct);
                 else
