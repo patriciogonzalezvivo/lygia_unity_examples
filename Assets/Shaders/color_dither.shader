@@ -37,7 +37,7 @@ Shader "Color/Dither"
                 return o;
             }
 
-            sampler2D _MainTex;
+            Texture2D _MainTex;
             #define BLUENOISE_TEXTURE _MainTex
             #define DITHER_FNC ditherVlachos
             // #define DITHER_FNC ditherTriangleNoise

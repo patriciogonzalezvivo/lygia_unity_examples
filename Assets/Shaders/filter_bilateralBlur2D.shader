@@ -37,7 +37,7 @@ Shader "Filters/BilateralBlur2D"
                 return o;
             }
 
-            sampler2D   _MainTex;
+            Texture2D   _MainTex;
 
             #include "lygia/filter/bilateral.hlsl"
             #include "lygia/draw/digits.hlsl"

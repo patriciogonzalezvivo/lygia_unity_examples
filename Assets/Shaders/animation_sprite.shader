@@ -37,8 +37,9 @@ Shader "Animation/Sprite"
                 return o;
             }
 
-            sampler2D _MainTex;
+            Texture2D _MainTex;
 
+            #include "lygia/sampler.hlsl"
             #include "lygia/math/decimate.hlsl"
             #include "lygia/space/scale.hlsl"
             #include "lygia/sample/sprite.hlsl"
@@ -53,7 +54,7 @@ Shader "Animation/Sprite"
                 float2 grid = float2(10.0, 7.0);
 
                 // st = decimation(st, float2(50., 35.));
-                color = tex2D(_MainTex, st);
+                color = _MainTex.Sample(DEFAULT_SAMPLER_STATE, st);
                 // st = scale(st, 0.8);
 
                 // color = sampleSprite(_MainTex, st, grid, 41.);

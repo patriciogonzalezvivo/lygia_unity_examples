@@ -37,7 +37,7 @@ Shader "Distort/ChromaAB"
                 return o;
             }
 
-            sampler2D   _MainTex;
+            Texture2D   _MainTex;
 
             // #define BARREL_TYPE float4
             // #define BARREL_SAMPLER_FNC(UV) tex2D(tex, clamp(UV, 0.01, 0.99))

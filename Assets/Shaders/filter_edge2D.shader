@@ -37,7 +37,7 @@ Shader "Filters/Edge2D"
                 return o;
             }
 
-            sampler2D   _MainTex;
+            Texture2D   _MainTex;
 
             #include "lygia/filter/edge.hlsl"
             #include "lygia/draw/digits.hlsl"

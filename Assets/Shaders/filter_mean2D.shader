@@ -37,7 +37,7 @@ Shader "Filters/Mean"
                 return o;
             }
 
-            sampler2D   _MainTex;
+            Texture2D   _MainTex;
 
             // #define MEAN_SAMPLER_FNC(POS_UV) tex2D(tex, clamp(POS_UV, float2(0.01, 0.01), float2(0.99, 0.99)))
             #include "lygia/filter/mean.hlsl"

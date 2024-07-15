@@ -42,7 +42,6 @@ Shader "Lighting/glass"
 
             sampler2D _MainTex;
             TextureCube _Cube;
-            SamplerState sampler_Cube;
 
             float   _Roughness;
             float   _Metallic;
