@@ -41,7 +41,6 @@ Shader "Lighting/pbr"
 
             sampler2D _MainTex;
             TextureCube _Cube;
-            SamplerState sampler_Cube;
 
             float _Roughness;
             float _Metallic;
@@ -83,7 +82,7 @@ Shader "Lighting/pbr"
                 mat.normal = i.normal;
                 mat.roughness = _Roughness;
                 mat.metallic = _Metallic;
-                mat.shadow = SHADOW_ATTENUATION(i);
+                // mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = pbr(mat);
 

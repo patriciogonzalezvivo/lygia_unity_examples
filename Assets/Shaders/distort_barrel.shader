@@ -37,7 +37,7 @@ Shader "Distort/Barrel"
                 return o;
             }
 
-            sampler2D   _MainTex;
+            Texture2D   _MainTex;
 
             #define BARREL_TYPE float4
             // #define BARREL_OCT_1

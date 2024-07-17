@@ -37,7 +37,7 @@ Shader "Filters/RadialBlur"
                 return o;
             }
 
-            sampler2D   _MainTex;
+            Texture2D   _MainTex;
 
             #include "lygia/sample/clamp2edge.hlsl"
             #define RADIALBLUR_SAMPLER_FNC(TEX, UV) sampleClamp2edge(TEX, UV)

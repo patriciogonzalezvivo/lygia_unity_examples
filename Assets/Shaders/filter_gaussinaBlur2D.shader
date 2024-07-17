@@ -37,7 +37,7 @@ Shader "Filters/gaussianBlur2D"
                 return o;
             }
 
-            sampler2D   _MainTex;
+            Texture2D   _MainTex;
 
             #define GAUSSIANBLUR_2D
             #include "lygia/sample/clamp2edge.hlsl"

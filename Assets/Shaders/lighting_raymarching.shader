@@ -2,6 +2,7 @@ Shader "Lighting/RayMarching"
 {
     Properties
     {
+        _CameraTarget("Camera Target", Vector) = (0, 0, 0, 1)
     }
     SubShader
     {
@@ -24,34 +25,27 @@ Shader "Lighting/RayMarching"
             struct appdata
             {
                 float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
-                float2 uv : TEXCOORD0;
-                float2 st : TEXCOORD1;
-                float4 vertex : SV_POSITION;
+                float4 clipSpacePos : SV_POSITION;
             };
 
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                o.st = ComputeScreenPos(o.vertex);
+                o.clipSpacePos = UnityObjectToClipPos(v.vertex);
                 return o;
             }
 
+            float3 _CameraTarget;
 
             #define RESOLUTION _ScreenParams.xy
             #define CAMERA_POSITION _WorldSpaceCameraPos
             #define SCENE_CUBEMAP   _Cube
             #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
             #define LIGHT_COLOR     _LightColor0.rgb
-            // #define LIGHT_POSITION     u_light
-            // #define LIGHT_DIRECTION     u_light
-            // #define LIGHT_COLOR         float3(0.95, 0.65, 0.5)
 
             // #include "lygia/lighting/atmosphere.hlsl"
 
@@ -60,7 +54,7 @@ Shader "Lighting/RayMarching"
             #define RAYMARCH_BACKGROUND ( float3(0.7, 0.9, 1.0) + ray.y * 0.8 )
             // #define RAYMARCH_BACKGROUND atmosphere(normal, normalize(u_light))
             #define RAYMARCH_AMBIENT    float3(0.7, 0.9, 1.0)
-            // // #define RAYMARCH_AMBIENT atmosphere(normal, normalize(u_light))
+            // #define RAYMARCH_AMBIENT atmosphere(normal, normalize(u_light))
             // #define RAYMARCH_MATERIAL_MAP
             
             #include "lygia/lighting/raymarch.hlsl"
@@ -94,17 +88,13 @@ Shader "Lighting/RayMarching"
 
             float4 frag (v2f i) : SV_Target
             {
-                float4 color = float4(0.0, 0.0, 0.0, 1.0);
                 float2 pixel = 1.0/RESOLUTION;
-                float2 st = i.vertex.xy * pixel;//ComputeScreenPos(i.vertex) * pixel;
-                float2 uv = i.uv;
+                float2 st = i.clipSpacePos * pixel;
+                float2 uv = ratio(st, RESOLUTION);
 
-                // uv = ratio(st, RESOLUTION);
-                float4 cam = mul(UNITY_MATRIX_MV, float3(0.0, 0.0, 1.0));
-                float3 rd = mul(UNITY_MATRIX_V, normalize( float3(st*2.0-1.0, -3.0) ) );
-                color.rgb = RAYMARCH_RENDER_FNC( cam * 0.11, (rd) );
+                float3 color = raymarch(CAMERA_POSITION, _CameraTarget, uv);
 
-                return color;
+                return float4(color, 1);
             }
             ENDCG
         }

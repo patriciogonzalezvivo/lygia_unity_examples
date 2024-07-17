@@ -37,7 +37,7 @@ Shader "Filters/boxBlur2D"
                 return o;
             }
 
-            sampler2D   _MainTex;
+            Texture2D   _MainTex;
 
 
             #define BOXBLUR_2D

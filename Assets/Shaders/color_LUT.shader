@@ -38,9 +38,10 @@ Shader "Color/LUT"
                 return o;
             }
 
-            sampler2D _MainTex;
-            sampler2D _LutTex;
+            Texture2D _MainTex;
+            Texture2D _LutTex;
             #define LUT_SQUARE
+            #include "lygia/sampler.hlsl"
             #include "lygia/color/lut.hlsl"
 
             float4 frag (v2f i) : SV_Target
@@ -49,7 +50,7 @@ Shader "Color/LUT"
                 float2 pixel = 1.0/_ScreenParams;
                 float2 st = i.uv;
                 
-                color = tex2D(_MainTex, st);
+                color = _MainTex.Sample(DEFAULT_SAMPLER_STATE, st);
                 color = lut(_LutTex, color);
 
                 return color;
