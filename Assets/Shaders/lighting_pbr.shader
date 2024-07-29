@@ -4,8 +4,8 @@ Shader "Lighting/pbr"
     {
         _MainTex ("Base (RGB)", 2D) = "white" {}
         _Cube ("Cubemap", CUBE) = "" {}
-        _Roughness ("Roughness", Range(0.001,1.0) ) = 0.05
-        _Metallic ("Metallic", Range(0.001,1.0) ) = 0.05
+        _Roughness ("Roughness", Range(0.0,1.0) ) = 0.05
+        _Metallic ("Metallic", Range(0.0,1.0) ) = 0.05
     }
     SubShader
     {

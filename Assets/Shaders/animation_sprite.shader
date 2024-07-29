@@ -54,7 +54,7 @@ Shader "Animation/Sprite"
                 float2 grid = float2(10.0, 7.0);
 
                 // st = decimation(st, float2(50., 35.));
-                color = _MainTex.Sample(DEFAULT_SAMPLER_STATE, st);
+                color = _MainTex.Sample(SAMPLER_BILINEAR_CLAMP, st);
                 // st = scale(st, 0.8);
 
                 // color = sampleSprite(_MainTex, st, grid, 41.);
