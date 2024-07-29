@@ -43,7 +43,6 @@ Shader "Lighting/RayMarching"
 
             #define RESOLUTION _ScreenParams.xy
             #define CAMERA_POSITION _WorldSpaceCameraPos
-            #define SCENE_CUBEMAP   _Cube
             #define LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
             #define LIGHT_COLOR     _LightColor0.rgb
 

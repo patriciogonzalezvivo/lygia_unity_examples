@@ -50,7 +50,7 @@ Shader "Color/LUT"
                 float2 pixel = 1.0/_ScreenParams;
                 float2 st = i.uv;
                 
-                color = _MainTex.Sample(DEFAULT_SAMPLER_STATE, st);
+                color = _MainTex.Sample(SAMPLER_BILINEAR_CLAMP, st);
                 color = lut(_LutTex, color);
 
                 return color;
