@@ -91,7 +91,7 @@ Shader "Lighting/pbrClearCoat"
                 mat.ior = _Ior;
                 mat.clearCoat = _ClearCoat;
                 mat.clearCoatRoughness = _ClearCoatRoughness;
-                mat.shadow = SHADOW_ATTENUATION(i);
+                // mat.shadow = SHADOW_ATTENUATION(i);
 
                 color = pbrClearCoat(mat);
 
